@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1= title
+  - let results = [{Ring_Material:"Gold",Ring_Weight:"20gms",Ring_Cost:"$500"},{Ring_Material:"Platinum",Ring_Weight:"15gms",Ring_Cost:"$5050"},{Ring_Material:"Diamond",Ring_Weight:"10gms",Ring_Cost:"$9005"}]
+  div(class="container-fluid")
+    div(class="row")
+      each item,index in results
+        div(class="col-sm-2",onClick=`buy(${index})`)
+          p Material is #{item.Ring_Material}
+          p Weight is #{item.Ring_Weight}
+          p Cost is #{item.Ring_Cost}
+  script.
+    function buy(itr) {
+      itr = itr+1;
+      alert(`You Purchased Item ${itr}`);
+    }

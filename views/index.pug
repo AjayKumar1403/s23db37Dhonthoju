@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+  p Hey there..! Welcome to Naruto world
+  button(type="button", class="btn btn-primary"  onclick="doReduce()") Press Me
+  div(id="reduce") Reduce the value
+  a(href='http://localhost:3000/ring') Link
+  script.
+    let count=20;
+    let change =-1;
+    function doReduce(){
+      count=count+change;
+      change=change-1;
+      document.getElementById('reduce').innerHTML=`Count ${count} with Change ${change}`
+    }
