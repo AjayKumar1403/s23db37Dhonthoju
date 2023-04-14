@@ -56,14 +56,14 @@ instance1.save().then( () => {
   console.log('There was an error', e.message);
 });
 
-  let instance2 = new ring({ring_Material:"Gold",ring_Weight :"10gms",ring_Cost:20000});
+  let instance2 = new ring({ring_Material:"Platinum",ring_Weight :"15gms",ring_Cost:1500});
   instance2.save().then( () => {
     console.log('Second object saved');
   }).catch( (e) => {
     console.log('There was an error', e.message);
   });
 
-  let instance3 = new ring({ring_Material:"Gold",ring_Weight :"10gms",ring_Cost:20000});
+  let instance3 = new ring({ring_Material:"Silver",ring_Weight :"20gms",ring_Cost:88000});
   instance3.save().then( () => {
   console.log('Third object saved');
 }).catch( (e) => {

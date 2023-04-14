@@ -28,7 +28,9 @@ exports.ring_create_post = async function (req, res) {
     document.ring_Cost = req.body.ring_Cost;
     try {
         let result = await document.save();
+        
         res.send(result);
+        
     }
     catch (err) {
         res.status(500);
@@ -52,7 +54,7 @@ exports.ring_update_put = function (req, res) {
 
 // VIEWS
 // Handle a show all view
-exports.Book_view_all_Page = async function (req, res) {
+exports.ring_view_all_Page = async function (req, res) {
     try {
         thering = await ring.find();
         res.render('ring', { title: 'ring Search Results', results: thering });
