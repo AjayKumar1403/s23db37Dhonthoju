@@ -6,6 +6,8 @@ var ring_controller = require('../controllers/ring');
 /// API ROUTE ///
 // GET resources base.
 router.get('/', api_controller.api);
+
+
 /// ring ROUTES ///
 // POST request for creating a ring.
 router.post('/rings', ring_controller.ring_create_post);
