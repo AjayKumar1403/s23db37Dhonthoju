@@ -22,7 +22,7 @@ var usersRouter = require('./routes/users');
 var ringRouter = require('./routes/ring');
 var boardRouter = require('./routes/board');
 var selectorRouter = require('./routes/selector'); 
-// var resourceRouter = require('./routes/resource'); 
+var resourceRouter = require('./routes/resource'); 
 
 
 var app = express();
@@ -42,7 +42,7 @@ app.use('/users', usersRouter);
 app.use('/ring', ringRouter);
 app.use('/board', boardRouter);
 app.use('/selector', selectorRouter);
-// app.use('/resource', resourceRouter);
+app.use('/resource', resourceRouter);
 
 
 // We can seed the collection if needed on server start
