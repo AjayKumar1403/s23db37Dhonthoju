@@ -10,7 +10,7 @@ router.get('/', api_controller.api);
 
 /// ring ROUTES ///
 // POST request for creating a ring.
-router.post('/rings', ring_controller.ring_create_post);
+router.post('/ring', ring_controller.ring_create_post);
 // DELETE request to delete ring.
 router.delete('/rings/:id', ring_controller.ring_delete);
 // PUT request to update ring.
@@ -19,4 +19,7 @@ router.put('/rings/:id', ring_controller.ring_update_put);
 router.get('/rings/:id', ring_controller.ring_detail);
 // GET request for list of all ring items.
 router.get('/rings', ring_controller.ring_list);
+
+
+
 module.exports = router;

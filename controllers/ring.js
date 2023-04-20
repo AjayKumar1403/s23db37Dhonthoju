@@ -25,8 +25,8 @@ exports.ring_detail = async function(req, res) {
     };
 
 
-   // Handle Costume update form on PUT.
-    exports.ring_update_put = async function(req, res) {
+   // Handle ring update form on PUT.
+exports.ring_update_put = async function(req, res) {
     console.log(`update on id ${req.params.id} with body
     ${JSON.stringify(req.body)}`)
     try {
@@ -71,11 +71,11 @@ exports.ring_create_post = async function (req, res) {
 };
 
 
-// for a specific Costume.
-// exports.costume_detail = async function(req, res) {
+// for a specific ring.
+// exports.ring_detail = async function(req, res) {
 //     console.log("detail" + req.params.id)
 //     try {
-//     result = await Costume.findById( req.params.id)
+//     result = await ring.findById( req.params.id)
 //     res.send(result)
 //     } catch (error) {
 //     res.status(500)
@@ -86,9 +86,23 @@ exports.ring_create_post = async function (req, res) {
 
 
 // Handle ring delete form on DELETE.
-exports.ring_delete = function (req, res) {
-    res.send('NOT IMPLEMENTED: ring delete DELETE ' + req.params.id);
-};
+// exports.ring_delete = function (req, res) {
+//     res.send('NOT IMPLEMENTED: ring delete DELETE ' + req.params.id);
+// };
+
+// Handle ring delete on DELETE.
+exports.ring_delete = async function(req, res) {
+    console.log("delete " + req.params.id)
+    try {
+    result = await ring.findByIdAndDelete( req.params.id)
+    console.log("Removed " + result)
+    res.send(result)
+    } catch (err) {
+    res.status(500)
+    res.send(`{"error": Error deleting ${err}}`);
+    }
+    };
+    
 
 
 // Handle ring update form on PUT.
@@ -110,6 +124,67 @@ exports.ring_view_all_Page = async function (req, res) {
         res.send(`{"error": ${err}}`);
     }
 };
+
+
+// Handle a show one view with id specified by query
+exports.ring_view_one_Page = async function(req, res) {
+    console.log("single view for id " + req.query.id)
+    try{
+    result = await ring.findById( req.query.id)
+    res.render('ringdetail',
+    { title: 'ring Detail', toShow: result });
+    }
+    catch(err){
+    res.status(500)
+    res.send(`{'error': '${err}'}`);
+    }
+    };
+
+
+
+// Handle building the view for updating a ring.
+// query provides the id
+exports.ring_update_Page = async function(req, res) {
+    console.log("update view for item "+req.query.id)
+    try{
+    let result = await ring.findById(req.query.id)
+    res.render('ringupdate', { title: 'ring Update', toShow: result });
+    }
+    catch(err){
+    res.status(500)
+    res.send(`{'error': '${err}'}`);
+    }
+    };
+
+
+    // Handle building the view for creating a ring.
+// No body, no in path parameter, no query.
+// Does not need to be async
+exports.ring_create_Page = function(req, res) {
+    console.log("create view")
+    try{
+    res.render('ringcreate', { title: 'ring Create'});
+    }
+    catch(err){
+    res.status(500)
+    res.send(`{'error': '${err}'}`);
+    }
+   };
+
+
+    // Handle a delete one view with id from query
+exports.ring_delete_Page = async function(req, res) {
+    console.log("Delete view for id " + req.query.id)
+    try{
+    result = await ring.findById(req.query.id)
+    res.render('ringdelete', { title: 'Ring Delete', toShow:
+   result });
+    }
+    catch(err){
+    res.status(500)
+    res.send(`{'error': '${err}'}`);
+    }
+   };
 
 
   

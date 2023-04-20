@@ -6,3 +6,9 @@ body {
 a {
   color: #00B7FF;
 }
+
+.ringAttr {
+  background-color: rgb(170, 120, 11);
+  width: 120px;
+  }
+  

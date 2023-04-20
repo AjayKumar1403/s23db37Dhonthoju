@@ -71,7 +71,7 @@ instance1.save().then( () => {
 });
  }
  
- let reseed = true;
+ let reseed = false;
  if (reseed) { recreateDB();}
  
 

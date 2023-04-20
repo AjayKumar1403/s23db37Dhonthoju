@@ -1,0 +1,50 @@
+extends layout
+
+
+block content
+
+  h1(id="title")= title
+  if (toShow == null)
+    h2 No instance to update
+  else
+  - let ringId = toShow._id
+  - let ring_Material = toShow.ring_Material
+  - let ring_Weight = toShow.ring_Weight
+  - let ring_Cost = toShow.ring_Cost
+
+ 
+
+  div.row(class='mb-2')
+    div.mr-1 ID is
+    div(class='details') #{ringId}
+  - let actionid = "/resource/rings/" + ringId
+
+  form(id='ringForm', action= actionid, method="PUT")
+    div.form-group
+        label.ringAttr(for='ring_Material') ring_Material
+        input#UniversityNname(type='text', name='ring_Material', value= ring_Material )
+    div.form-group
+        label.ringAttr(for='ring_Weight') ring_Weight
+        input#City(type='text', name='ring_Weight', value= ring_Weight )
+    div.form-group
+        label.ringAttr(for='ring_Weight') ring_Cost
+        input#Students(type='number', name='ring_Weight', value= ring_Cost )
+    input(type="submit")
+
+  script.
+    document.forms['ringForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      // TODO do something here to show user that form is being submitted
+      fetch(event.target.action, {
+        method: 'PUT',
+        body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+      }).then((resp) => {
+        return resp.json(); // or resp.text() or whatever the server sends
+      }).then((body) => {
+        alert("Update succeded")
+        // TODO handle body
+      }).catch((error) => {
+        // TODO handle error
+        alert("Update failed " + error )
+      });
+    });

@@ -1,0 +1,21 @@
+extends layout
+
+block content
+ h1= title
+ - let ringid = toShow._id
+ - let ring_Material = toShow.ring_Material
+ - let ring_Weight = toShow.ring_Weight
+ - let ring_Cost = toShow.ring_Cost
+ div
+  div.row
+   div(class='ringAttr mr-3') ring ID is:
+   div #{ringid}
+  div.row
+   div(class='ringAttr mr-3') ring Material is:
+   div #{ring_Material}
+  div.row
+   div(class='ringAttr mr-3') ring Weight is:
+   div #{ring_Weight}
+  div.row
+   div(class='ringAttr mr-3') ring Cost is:
+   div #{ring_Cost}

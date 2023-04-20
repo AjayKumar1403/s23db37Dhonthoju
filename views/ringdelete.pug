@@ -1,0 +1,51 @@
+extends layout
+
+block content
+ h1= title
+ if (toShow == null)
+  h2 No instance to delete
+ else
+  - let ringid = toShow._id
+  - let ring_Material = toShow.ring_Material
+  - let ring_Weight = toShow.ring_Weight
+  - let ring_Cost = toShow.ring_Cost
+  - let actionid = "/resource/ring/" + dogid
+  script let actionid = "#{actionid}"
+  div
+   div.row
+    div(class='ringAttr mr-3') Ring ID is:
+    div #{ringid}
+   div.row
+    div(class='ringAttr mr-3') Ring Material is:
+    div #{ring_Material}
+   div.row
+    div(class='ringAttr mr-3') Ring Weight is:
+    div #{ring_Weight}
+   div.row
+    div(class='ringAttr mr-3') Ring Cost is:
+    div #{ring_Cost}
+  button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
+  button(class="btn btn-secondary m-2" onclick="cancel()") Cancel
+ script.
+  function cancel() {
+   // Go back to the home page for the dog collection
+   window.location.href='/ring'
+  }
+ script.
+  function deleteOnid() {
+   console.log("starting delete")
+   // delete first
+   fetch(actionid, {
+    method: 'DELETE' // Don't need a body for the delete
+   }).then((resp) => {
+    return resp.json(); // or resp.text() or whatever the server sends
+   }).then((body) => {
+    alert("Delete succeded")
+   window.location.href='/ring'
+   // TODO handle body
+   }).catch((error) => {
+   // TODO handle error
+    alert("Delete succeded")
+    alert("Delete failed " + error )
+   });
+  }
