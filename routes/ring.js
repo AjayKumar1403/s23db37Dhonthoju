@@ -1,9 +1,9 @@
 var express = require('express');
-const ring_controlers= require('../controllers/ring');
+const ring_controlers = require('../controllers/ring');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/',  ring_controlers.ring_view_all_Page);
+router.get('/', ring_controlers.ring_view_all_Page);
 
 
 
@@ -18,6 +18,14 @@ router.get('/create', ring_controlers.ring_create_Page);
 
 /* GET delete ring page */
 router.get('/delete', ring_controlers.ring_delete_Page);
+
+/* GET update ring page */
+router.get('/update', ring_controlers.ring_update_Page);
+
+
+
+
+
 
 
 

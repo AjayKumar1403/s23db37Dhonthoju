@@ -3,38 +3,49 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var ring = require("./models/ring");
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+  Account.findOne({ username: username }, function (err, user) {
+  if (err) { return done(err); }
+  if (!user) {
+  return done(null, false, { message: 'Incorrect username.' });
+  }
+  if (!user.validPassword(password)) {
+  return done(null, false, { message: 'Incorrect password.' });
+  }
+  return done(null, user);
+  })}));
+  
+
+
 require('dotenv').config();
-const connectionString = process.env.MONGO_CON
+const connectionString =
+process.env.MONGO_CON
 mongoose = require('mongoose');
-mongoose.connect(connectionString,{useNewUrlParser: true,useUnifiedTopology: true});
+mongoose.connect(connectionString,
+{useNewUrlParser: true,
+useUnifiedTopology: true});
 
 //Get the default connection
 var db = mongoose.connection;
 //Bind connection to error event
-db.on('error', console.error.bind(console, 'MongoDB connectionerror:'));
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once("open", function(){
 console.log("Connection to DB succeeded")});
+
+
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var ringRouter = require('./routes/ring');
 var boardRouter = require('./routes/board');
-var selectorRouter = require('./routes/selector'); 
-var resourceRouter = require('./routes/resource'); 
-
-
-// passport config
-// Use the existing connection
-// The Account model
-var Account =require('./models/account');
-passport.use(new LocalStrategy(Account.authenticate()));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
-
+var selectorRouter = require('./routes/selector');
+var ring = require("./models/ring");
+var resourceRouter = require("./routes/resource");
 
 
 var app = express();
@@ -47,6 +58,15 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+ }));
+ app.use(passport.initialize());
+ app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
@@ -55,46 +75,15 @@ app.use('/ring', ringRouter);
 app.use('/board', boardRouter);
 app.use('/selector', selectorRouter);
 app.use('/resource', resourceRouter);
-app.use(require('express-session')({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: false
-  }));
-  app.use(passport.initialize());
-  app.use(passport.session());
 
+// passport config
+// Use the existing connection
+// The Account model
+var Account =require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 
-// We can seed the collection if needed on server start
-async function recreateDB(){
-  // Delete everything
-  await ring.deleteMany();
-  let instance1 = new ring({ring_Material:"Gold",ring_Weight :"10gms",ring_Cost:20000});
-instance1.save().then( () => {
-  console.log('First object saved');
-}).catch( (e) => {
-  console.log('There was an error', e.message);
-});
-
-  let instance2 = new ring({ring_Material:"Platinum",ring_Weight :"15gms",ring_Cost:1500});
-  instance2.save().then( () => {
-    console.log('Second object saved');
-  }).catch( (e) => {
-    console.log('There was an error', e.message);
-  });
-
-  let instance3 = new ring({ring_Material:"Silver",ring_Weight :"20gms",ring_Cost:88000});
-  instance3.save().then( () => {
-  console.log('Third object saved');
-}).catch( (e) => {
-  console.log('There was an error', e.message);
-});
- }
- 
- let reseed = false;
- if (reseed) { recreateDB();}
- 
-
- 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -112,27 +101,31 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+async function recreateDB() {
+  await ring.deleteMany();
+  let instance1 = new ring({ brand: "Gucci", model: "Marmont", color: "Black", price: 2500 });
 
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-  Account.findOne(
-    { username: username }, function (err, user) {
-  if (err) { 
-    return done(err); 
-  }
-  if (!user) {
-  return done(null, false, { message: 'Incorrect username.' });
-  }
-  if (!user.validPassword(password)) {
-  return done(null, false, { message: 'Incorrect password.' });
-  }
-  return done(null, user);
+  instance1.save().then(() => {
+    console.log('Everything went well');
+  }).catch((e) => {
+    console.log('There was an error', e.message);
   });
-}));
+  let instance2 = new ring({ brand: "Chanel", model: "Boy", color: "Pink", price: 4500 });
+  instance2.save().then(() => {
+    console.log('Everything went well');
+  }).catch((e) => {
+    console.log('There was an error', e.message);
+  });
+  let instance3 = new ring({ brand: "Prada", model: "Diagramme", color: "Red", price: 1800 });
+  instance3.save().then(() => {
+    console.log('Everything went well');
+  }).catch((e) => {
+    console.log('There was an error', e.message);
+  });
+}
 
-
+let reseed = false;
+if (reseed) { recreateDB();}
 
 
 module.exports = app;
-
-
